@@ -1,0 +1,86 @@
+samba是个文件共享服务器。在linux和windows之间很好用，当然有更好的是NFS。这里对自己在CentOS7上安装samba的过程做一个记录。
+因为发现网上的都很乱，自己踩过坑以后，记录下，以便以后不再踩了。当然，你也可以去看《鸟哥的linux私房菜-服务器搭建篇》，上面都介绍
+的很好。
+1、关闭防火墙。
+    CentOS 7 是自带的firewall，CentOS 6 好像是iptables。关闭防火墙命令如下：
+     第一种方法是关闭防火墙：
+
+        systemctl disable firewalld.service
+    第二种方法是添加规则：
+
+        firewall-cmd --permanent --zone=public --add-service=samba
+        firewall-cmd --reload
+2、关闭selinux
+
+    vim /etc/selinux/config
+    设置：SELINUX=disabled
+
+
+
+
+Centos7配置文件共享服务器SAMBA三步曲
+
+1、安装
+
+yum install samba samba-client samba-common -y
+2、配置
+
+备份已有配置
+mv /etc/samba/smb.conf /etc/samba/smb.conf.bkp
+添加新的配置
+vim /etc/samba/smb.conf
+输入以下内容
+[global]
+workgroup = WORKGROUP
+server string = Samba Server %v
+netbios name = centos
+security = user
+map to guest = bad user
+dns proxy = no
+#============================ Share Definitions ============================== 
+[Public]
+path = /data/share/
+writable = yes
+browsable = yes
+guest ok = yes
+guest only = yes
+create mode = 0777
+directory mode = 0777
+
+注意：在samba4中 share 和 server已经被禁用，需要用 security = user 和map to guest =Bad User来实现无密码访问目录
+
+
+配置启动服务
+mkdir -p /data/share/public
+systemctl enable smb.service
+systemctl enable nmb.service
+systemctl restart smb.service
+systemctl restart nmb.service
+
+
+设置防火墙
+firewall-cmd --permanent --zone=public --add-service=samba
+firewall-cmd --reload
+修改目录访问权限 
+chmod -R 0755 public
+chown -R nobody:nobody public
+
+
+若使用用户名和密码登陆访问共享文件夹
+添加smb用户
+adduser smbuer
+smbpasswd  -a smbuer
+
+
+共享目录配置如下
+[Public]
+   path = /data/share/
+   writable = yes
+   browsable = yes
+   guest ok = no
+   public = yes
+   guest only = yes
+   create mode = 0777
+   directory mode = 0777
+
+
