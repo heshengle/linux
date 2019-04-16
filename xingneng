@@ -1,2 +1,18 @@
 1.查看tcp连接数
  netstat -an |grep 'ESTABLISHED' |grep 'tcp' |wc -l  
+ 
+ 2.查看当前linux的版本
+ cat /etc/redhat-release
+
+
+
+
+
+
+
+
+
+
+
+
+
