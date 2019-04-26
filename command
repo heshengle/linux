@@ -137,3 +137,10 @@ cat /proc/cpuinfo| grep "cpu cores"| uniq  　　查看cpu核心数
 
 linux 四剑客（4 个）
 grep egrep sed awk
+
+
+
+mkdir /alidata; 
+mount /dev/sdb /alidata; 
+
+
