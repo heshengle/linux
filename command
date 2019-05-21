@@ -139,8 +139,22 @@ linux 四剑客（4 个）
 grep egrep sed awk
 
 
-
+##挂载磁盘
 mkdir /alidata; 
 mount /dev/sdb /alidata; 
+
+
+lsblk 　　　　                                 查看分区和磁盘
+
+df -h 　　                                        查看空间使用情况
+
+fdisk -l 　　                                    分区工具查看分区信息
+
+cfdisk /dev/sda  　　                      查看分区
+
+blkid 　                                       　查看硬盘label（别名）
+du -sh ./* 　　                                统计当前目录各文件夹大小
+free -h 　                                    　查看内存大小
+cat /proc/cpuinfo| grep "cpu cores"| uniq  　　查看cpu核心数
 
 
