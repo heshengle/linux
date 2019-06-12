@@ -165,6 +165,25 @@ echo 3 > /proc/sys/vm/drop_caches:表示清除pagecache和slab分配器中的缓
 
 
 
+centos7开启端口（永久--permanent）
+1、运行命令：
+firewall-cmd --get-active-zones
+运行完成之后，可以看到zone名称，如下：
+
+2、执行如下命令命令：
+firewall-cmd --zone=public --add-port=6379/tcp --permanent
+
+3、设置完需重启防火墙，运行命令：
+firewall-cmd --reload
+
+4、查看端口号是否开启，运行命令：
+firewall-cmd --query-port=6379/tcp
+
+5、在windows下按下win+R键，输入cmd，运行命令(需开启telnet)，如果变成空界面表示成功：
+   telnet  192.168.xx.xx 6379
+
+
+
 
 
 
